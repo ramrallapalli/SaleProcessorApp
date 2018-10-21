@@ -1,11 +1,15 @@
 package org.mysolution.processors;
 
+import org.mysolution.constants.Constants;
 import org.mysolution.enums.CatalogItem;
 import org.mysolution.enums.MessageType;
 import org.mysolution.enums.Operation;
+import org.mysolution.model.Report;
 import org.mysolution.model.Sale;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,8 +79,58 @@ public class MessageProcessor {
      * @param sale
      * @param sales
      */
-    public void save(Sale sale, List<Sale> sales) {
+    public String save(Sale sale, List<Sale> sales) {
         sales.add(sale);
+
+        String result = getReportLogMessage(sales);
+        if (!result.isEmpty())
+            return result;
+        else
+            return Constants.EMPTY_STRING;
+    }
+
+    public void saveBulkSales(List<Sale> newSales, List<Sale> sales) {
+        for (Sale currSale : newSales) {
+            String result = this.save(currSale, sales);
+            if (!result.isEmpty()) {
+                System.out.println(result);
+            }
+        }
+    }
+
+    /**
+     * After every 10 sales, generates the sales report when invoked.
+     * @param sales
+     * @return
+     */
+    private String getReportLogMessage(List<Sale> sales) {
+        Map<CatalogItem, Report> report = new TreeMap<>();
+        StringBuilder result = new StringBuilder(Constants.EMPTY_STRING);
+
+        if (sales.size() % 10 == 0) {
+            for (Sale thisSale : sales) {
+                if (report.containsKey(thisSale.getProductType())) {
+                    Report thisReport = report.get(thisSale.getProductType());
+
+                    thisReport.setTotalNoOfSales(thisReport.getTotalNoOfSales() + 1);
+                    thisReport.setTotalValueOfSales(thisReport.getTotalValueOfSales() +
+                                                        thisSale.getValue());
+                } else {
+                    Report newReport = new Report();
+                    newReport.setTotalNoOfSales(1);
+                    newReport.setTotalValueOfSales(thisSale.getValue());
+                    report.put(thisSale.getProductType(), newReport);
+                }
+            }
+
+            for (CatalogItem key : report.keySet()) {
+                Report thisReport = report.get(key);
+                result.append(key.name() + ": Total Sales - " + thisReport.getTotalNoOfSales() +
+                "; Total Value - " + thisReport.getTotalValueOfSales() + "\n");
+            }
+        }
+
+        return result.toString();
     }
 
     private boolean isValidNumber(String msgPart) {
@@ -86,3 +140,4 @@ public class MessageProcessor {
         return matcher.find();
     }
 }
+

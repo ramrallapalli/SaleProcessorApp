@@ -34,3 +34,5 @@ After every 10th Message, Compute total value of sales of each product type.
 #Requirement 11
 After computing no. of sales and total value of sales of each product type, log it to the console.
 
+#Requirement 12
+After processing 50 messages, do not accept any further orders and log all the adjustments made for each sale type.
