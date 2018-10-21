@@ -3,8 +3,8 @@ package org.mysolution.enums;
 public enum CatalogItem {
     APPLE(0, "Apple"),
     ORANGE(1, "Orange"),
-    BANANA(2, "BANANA"),
-    NONE(3, "NONE");
+    BANANA(2, "Banana"),
+    NONE(3, "None");
 
     private final int value;
     private final String name;

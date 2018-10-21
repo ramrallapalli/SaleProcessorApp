@@ -5,6 +5,7 @@ import org.mysolution.enums.Operation;
 import org.mysolution.model.Sale;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MessageUtils {
@@ -54,6 +55,7 @@ public class MessageUtils {
     public static void runAdjustmentOperationOnSales(List<Sale> currentSales, String message) {
         String [] msgParts = message.split(" ");
         Operation operation = Operation.getOperationFromName(msgParts[0]);
+        Date currDate = new Date(System.currentTimeMillis());
 
         if (operation == Operation.ADD) {
             double value = getProductValue(msgParts[1]);
@@ -63,6 +65,7 @@ public class MessageUtils {
                 if (thisSale.getProductType() == product) {
                     double newVal = thisSale.getValue() + value;
                     thisSale.setValue(newVal);
+                    thisSale.getAdjustments().append(currDate.toString() + ": Add adjustment @ " + value + "\n");
                 }
             }
         } else if (operation == Operation.SUBTRACT) {
@@ -74,8 +77,11 @@ public class MessageUtils {
                     double currValue = thisSale.getValue();
                     double newVal = currValue - value;
 
-                    if (newVal > 0.0)
+                    if (newVal > 0.0) {
                         thisSale.setValue(newVal);
+                        thisSale.getAdjustments().append(currDate.toString() + ": Subtract adjustment @ "
+                                                            + value + "\n");
+                    }
                 }
             }
         } else {
@@ -86,6 +92,8 @@ public class MessageUtils {
                 if (thisSale.getProductType() == product) {
                     double newVal = thisSale.getValue() * factor;
                     thisSale.setValue(newVal);
+                    thisSale.getAdjustments().append(currDate.toString() + ": Multiply adjustment @ "
+                            + factor + "times\n");
                 }
             }
         }

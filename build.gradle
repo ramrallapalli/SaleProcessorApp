@@ -7,6 +7,18 @@ apply plugin: 'jacoco'
 
 sourceCompatibility = 1.8
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Sale Processor',
+                'Implementation-Version': version,
+                'Main-Class': 'org.mysolution.Application'
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 repositories {
     mavenCentral()
 }

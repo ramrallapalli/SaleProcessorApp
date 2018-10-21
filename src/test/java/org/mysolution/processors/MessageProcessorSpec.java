@@ -3,6 +3,8 @@ package org.mysolution.processors;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mysolution.constants.Constants;
+import org.mysolution.enums.CatalogItem;
 import org.mysolution.enums.MessageType;
 import org.mysolution.model.Sale;
 import org.mysolution.utils.MessageUtils;
@@ -53,11 +55,40 @@ public class MessageProcessorSpec {
         List<Sale> sales = new ArrayList<>();
         Sale sale = MessageUtils.processSingleSale("Apple at 10p");
 
-        processor.save(sale, sales);
+        Assert.assertEquals(Constants.EMPTY_STRING, processor.save(sale, sales));
         Assert.assertEquals(1, sales.size());
     }
 
-    public void whenTenthSaleLogTheTotalSales() {
+    @Test
+    public void whenTenthSaleLogTheTotalSalesAndTotalValue() {
+        List<Sale> sales = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            Sale tempSale = new Sale(CatalogItem.APPLE, 10.0);
+            sales.add(tempSale);
+        }
 
+        for (int i = 0; i < 5; i++) {
+            Sale tempSale = new Sale(CatalogItem.BANANA, 10.0);
+            sales.add(tempSale);
+        }
+
+        Sale sale = MessageUtils.processSingleSale("Apple at 20p");
+        Assert.assertEquals("APPLE: Total Sales - 5; Total Value - 60.0\n" +
+                "BANANA: Total Sales - 5; Total Value - 50.0\n", processor.save(sale, sales));
+    }
+
+    @Test
+    public void whenBulkOrderReceivedSaveAllSales() {
+        List<Sale> sales = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Sale tempSale = new Sale(CatalogItem.APPLE, 10.0);
+            sales.add(tempSale);
+        }
+
+        String message = "20 sales of apples at 30p each";
+        List<Sale> newSales = MessageUtils.processMultiSale(message);
+
+        processor.saveBulkSales(newSales, sales);
+        Assert.assertEquals(25, sales.size());
     }
 }
