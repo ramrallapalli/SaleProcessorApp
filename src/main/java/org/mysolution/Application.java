@@ -24,7 +24,7 @@ public class Application {
                 "4. Multiply Banana by 5p (Adjustment Operation)\n");
         String message = Constants.EMPTY_STRING;
         while (!message.equalsIgnoreCase("Exit")) {
-            if (messageCounter == 5) {
+            if (messageCounter == 50) {
                 System.out.println("System Paused! Cannot process further messages ....");
                 reportAdjustmentsForTheDay(sales);
                 break;
