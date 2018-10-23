@@ -1,0 +1,38 @@
+#Requirement 1
+A sale that has a product type and value field.
+
+#Requirement 2
+A util method that processes a message with single sale.
+
+#Requirement 3
+A util method that processes a message with details of sale (type and price) and number of ocurrances of that sale.
+
+#Requirement 4
+A util method that processes a message with add operation along with product type and price which readjusts the price of each sale of that
+product type by adding the value.
+
+#Requirement 5
+A util method that processes a message with subtract operation along with product type and price which readjusts the price of each sale of that
+product type by reducing the value.
+
+#Requirement 6
+A util method that processes a message with add operation along with product type and price which readjusts the price of each sale of that
+product type by multiplying the value by given number.
+
+#Requirement 7
+Every message must be identified and processed.
+
+#Requirement 8
+Every sale must be stored.
+
+#Requirement 9
+After every 10th Message, Compute number of sales of each product type.
+
+#Requirement 10
+After every 10th Message, Compute total value of sales of each product type.
+
+#Requirement 11
+After computing no. of sales and total value of sales of each product type, log it to the console.
+
+#Requirement 12
+After processing 50 messages, do not accept any further orders and log all the adjustments made for each sale type.
