@@ -21,7 +21,7 @@ public class Application {
                 "1. Apple at 10p (Single Sale)\n " +
                 "2. 20 sales of apples at 10p each (Multiple/Bulk Sale)\n " +
                 "3. Add/Subtract 20p apples (Adjustment Operation)\n " +
-                "4. Multiply Banana by 5p (Adjustment Operation)\n");
+                "4. Multiply Banana by 5 (Adjustment Operation)\n");
         String message = Constants.EMPTY_STRING;
         while (!message.equalsIgnoreCase("Exit")) {
             if (messageCounter == 50) {

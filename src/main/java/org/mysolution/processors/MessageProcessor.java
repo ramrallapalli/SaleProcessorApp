@@ -68,6 +68,10 @@ public class MessageProcessor {
      * @return
      */
     public boolean isValue(String msgPart) {
+        if (msgPart == null) {
+            return false;
+        }
+
         Pattern regex = Pattern.compile("[0-9]+p");
         Matcher matcher = regex.matcher(msgPart);
 
@@ -134,6 +138,10 @@ public class MessageProcessor {
     }
 
     private boolean isValidNumber(String msgPart) {
+        if (msgPart == null) {
+            return false;
+        }
+
         Pattern regex = Pattern.compile("[1-9]");
         Matcher matcher = regex.matcher(msgPart);
 
